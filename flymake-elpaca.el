@@ -1,6 +1,62 @@
-;;; flymake-elpaca ---  A Flymake backend for elpaca-based Emacs configurations -*- lexical-binding: t; -*-
+;;; flymake-elpaca.el ---  A Flymake backend for elpaca-based configurations -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2025 Reed Mullanix <reedmullanix@gmail.com>
+
+;; Author: Reed Mullanix <reedmullanix@gmail.com>
+
+;; URL: https://github.com/totbwf/flymake-elpaca
+;; Keywords: lisp local
+
+;; Package-Version: 0.1.0
+;; Package-Requires: ((emacs "29.1"))
+
+;; SPDX-License-Identifier: GPL-3.0-or-later
+
+;; This file is NOT part of GNU Emacs.
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 3, or (at your option)
+;; any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
+
+;; The existing `flymake' backend for `emacs-lisp-mode' is designed for package
+;; authors, and invokes the byte compiler in a hermetic environment.
+;; This makes it difficult to use for Emacs configurations, though this can
+;; be worked around with `elisp-flymake-byte-compile-load-path'.  However,
+;; what *cannot* be worked around are some alternative packaging solutions.
+
+;; Notably, `elpaca' uses an asynchronous package installation model, which
+;; means that packages are not done loading by the end of Emacs's initialization
+;; process, which completely breaks the existing flymake backend.  This package
+;; provides an alternative `flymake' backend that invokes `elpaca-wait' before
+;; invoking the byte compiler: this ensures that all of our packages are actually
+;; initialized by the time we invoke the byte compiler.
+
+;; This package takes inspiration from `elisp-mode.el' and `flymake-straight'
+;; (https://github.com/KarimAziev/flymake-straight/blob/main/flymake-straight.el).
 
 ;;; Code:
 
